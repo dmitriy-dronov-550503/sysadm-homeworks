@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-STUDENT_NAME="your name"
+STUDENT_NAME="Dmitriy Dronov"
 
 echo "my name in ${STUDENT_NAME}"
