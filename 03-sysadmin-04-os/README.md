@@ -36,7 +36,7 @@ WantedBy=multi-user.target
 **Решение:**  
 
 Я думаю, что можно было бы использовать эти опции:  
-```commandline
+```
 # HELP go_memstats_frees_total Total number of frees.
 # TYPE go_memstats_frees_total counter
 go_memstats_frees_total 1531
@@ -137,7 +137,7 @@ node_os_version{id="ubuntu",id_like="debian",name="Ubuntu"} 20.04
 **Решение:**  
 
 Netdata предоставляет широкий спектр мониторинга по разным категориям.  Веб-страница разделена на секции:  
-```commandline
+```
  System Overview
  CPUs
  Memory
@@ -180,7 +180,7 @@ vagrant@vagrant:~$ ulimit -n -S
 **Решение:**  
 
 В отдельной сессии я создал неймспейс:
-```commandline
+```
 root@vagrant:~# screen
 root@vagrant:~# unshare -f --pid --mount-proc /bin/bash
 root@vagrant:~# ps aux
@@ -193,7 +193,7 @@ PING google.com (142.250.179.142) 56(84) bytes of data.
 ```
 
 В другой сессии нашёл процесс с отдельным неймспейсом и "зашёл" в этот неймспейс:
-```commandline
+```
 root@vagrant:~# ps aux
 ...
 root        1780  0.0  0.1   7236  3992 pts/2    Ss   21:45   0:00 /bin/bash
@@ -226,17 +226,15 @@ root@vagrant:/#
 Данную команду:
 `:(){ :|:& };:`  
 можно преобразовать, заменив : именем f. Тогда получится следующий код:  
-```commandline
+```
 f() {
   f | f &
 }
 f
 ```
 Это функция, которая делает fork двух таких же функций, каждая их которых делает fork ещё по два раза и так далее. Это забивает оперативную память и создаёт огромное количетсво форков, поэтому система сильно нагружается.  
-Согласно сообщению `dmesg`, дальнейшее распространение форков было остановлено контроллером пидов:
-```commandline
-[ 1920.591049] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-3.scope
-```
+Согласно сообщению `dmesg`, дальнейшее распространение форков было остановлено контроллером пидов:  
+`[ 1920.591049] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-3.scope`  
 Восстановление системы было возможно благодаря механизму под названием cgroups или "control groups". Cgroups – это механизм ядра, позволяющий ограничивать использование, вести учет и изолировать потребление системных ресурсов.
 
 ---
