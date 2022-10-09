@@ -238,7 +238,7 @@ UNCONN         0               0                        10.0.2.15%eth0:bootpc   
 
 5. Используя diagrams.net, создайте L3 диаграмму вашей домашней сети или любой другой сети, с которой вы работали.
 #### Решение:
-![Network scheme](https://github.com/dmitriy-dronov-550503/sysadm-homeworks/blob/devsys10/03-sysadmin-08-net/Network.PNG?raw=true)  
+![Network scheme](https://github.com/dmitriy-dronov-550503/sysadm-homeworks/blob/devsys10/03-sysadmin-08-net/Network.png?raw=true)  
 
  ---
 ## Задание для самостоятельной отработки (необязательно к выполнению)
