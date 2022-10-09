@@ -1,14 +1,13 @@
 # Домашнее задание к занятию "3.8. Компьютерные сети, лекция 3"
 
 1. Подключитесь к публичному маршрутизатору в интернет. Найдите маршрут к вашему публичному IP
-#### Решение:
 ```
 telnet route-views.routeviews.org
 Username: rviews
 show ip route x.x.x.x/32
 show bgp x.x.x.x/32
 ```
-
+#### Решение:
 ```
 route-views>show ip route 109.252.184.206 255.255.0.0
 Routing entry for 109.252.0.0/16
