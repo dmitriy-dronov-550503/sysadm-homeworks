@@ -100,15 +100,19 @@ for result in result_os.split('\n'):
 ```
 vagrant@vagrant:~$ python3 check_mod_repo.py
 The directory /home/vagrant is not a git repository
+
 vagrant@vagrant:~$ python3 check_mod_repo.py ~/netology/sysadm-homeworks/
 /home/vagrant/netology/sysadm-homeworks/01-intro-01/netology.md
 /home/vagrant/netology/sysadm-homeworks/03-sysadmin-04-os/README.md
 /home/vagrant/netology/sysadm-homeworks/04-script-01-bash/README.md
 /home/vagrant/netology/sysadm-homeworks/README.md
+
 vagrant@vagrant:~$ python3 check_mod_repo.py netology
 The directory /home/vagrant/netology is not a git repository
+
 vagrant@vagrant:~$ python3 check_mod_repo.py netology/some_other_repo
 There directory /home/vagrant/netology/some_other_repo does not exist
+
 vagrant@vagrant:~$ python3 check_mod_repo.py netology/other_repo/
 /home/vagrant/netology/other_repo/01-intro-01/netology.md
 /home/vagrant/netology/other_repo/03-sysadmin-04-os/README.md
@@ -155,7 +159,9 @@ with open(DB_NAME, 'w') as f:
 ### Вывод скрипта при запуске при тестировании:
 ```
 vagrant@vagrant:~$ sudo systemd-resolve --flush-caches
+
 vagrant@vagrant:~$ rm domains_and_ips.db
+
 vagrant@vagrant:~$ python3 ip.py
 drive.google.com - 108.177.127.194
 [ERROR] drive.google.com IP mismatch: 0.0.0.0 108.177.127.194
@@ -163,20 +169,24 @@ mail.google.com - 142.250.102.19
 [ERROR] mail.google.com IP mismatch: 0.0.0.0 142.250.102.19
 google.com - 142.250.27.139
 [ERROR] google.com IP mismatch: 0.0.0.0 142.250.27.139
+
 vagrant@vagrant:~$ python3 ip.py
 drive.google.com - 108.177.127.194
 mail.google.com - 142.250.102.83
 [ERROR] mail.google.com IP mismatch: 142.250.102.19 142.250.102.83
 google.com - 142.250.27.138
 [ERROR] google.com IP mismatch: 142.250.27.139 142.250.27.138
+
 vagrant@vagrant:~$ python3 ip.py
 drive.google.com - 108.177.127.194
 mail.google.com - 142.250.102.83
 google.com - 142.250.27.138
+
 vagrant@vagrant:~$ python3 ip.py
 drive.google.com - 108.177.127.194
 mail.google.com - 142.250.102.83
 google.com - 142.250.27.138
+
 vagrant@vagrant:~$ python3 ip.py
 drive.google.com - 108.177.127.194
 mail.google.com - 142.250.102.83
