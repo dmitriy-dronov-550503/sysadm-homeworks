@@ -10,15 +10,19 @@
 ## Обязательная задача 1
 Мы выгрузили JSON, который получили через API запрос к нашему сервису:
 ```
-    { "info" : "Sample JSON output from our service\t",
-        "elements" :[
-            { "name" : "first",
-            "type" : "server",
-            "ip" : 7175 
-            }
-            { "name" : "second",
-            "type" : "proxy",
-            "ip : 71.78.22.43
+    {
+        "info" : "Sample JSON output from our service\t",
+        "elements" :
+        [
+            {
+                "name" : "first",
+                "type" : "server",
+                "ip" : 7175 
+            },
+            {
+                "name" : "second",
+                "type" : "proxy",
+                "ip" : "71.78.22.43"
             }
         ]
     }
@@ -30,22 +34,125 @@
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+import json
+import yaml
+
+DB_JSON_NAME = 'domains_and_ips.json'
+DB_YAML_NAME = 'domains_and_ips.yaml'
+
+domains = {'drive.google.com':'0.0.0.0',
+           'mail.google.com':'0.0.0.0',
+           'google.com':'0.0.0.0'}
+
+def check_DB(name):
+    data = None
+    if os.path.isfile(name):
+        try:
+            with open(name, 'r') as f:
+                data = f.read()
+        except:
+            print('Cannot read database', name)
+            pass
+    return data
+
+json_data = check_DB(DB_JSON_NAME)
+yaml_data = check_DB(DB_YAML_NAME)
+
+if json_data is not None:
+    domains = json.loads(json_data)
+elif yaml_data is not None:
+    domains = yaml.load(yaml_data)
+
+for d in domains.keys():
+    bash_command = ['dig +short {} | tail -n1'.format(d)]
+    ip = os.popen(' && '.join(bash_command)).read().replace('\n','')
+    print(d,'-',ip)
+    if domains[d] != ip:
+        print('[ERROR] {} IP mismatch: {} {}'.format(d, domains[d], ip))
+        domains[d] = ip
+
+
+with open(DB_JSON_NAME, 'w') as f:
+    f.write(json.dumps(domains))
+
+with open(DB_YAML_NAME, 'w') as f:
+    f.write(yaml.dump(domains))
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+vagrant@vagrant:~/test_dir$ ls
+ip2.py
+
+vagrant@vagrant:~/test_dir$ python3 ip2.py
+drive.google.com - 142.250.102.194
+[ERROR] drive.google.com IP mismatch: 0.0.0.0 142.250.102.194
+mail.google.com - 142.250.102.17
+[ERROR] mail.google.com IP mismatch: 0.0.0.0 142.250.102.17
+google.com - 142.250.102.100
+[ERROR] google.com IP mismatch: 0.0.0.0 142.250.102.100
+
+vagrant@vagrant:~/test_dir$ python3 ip2.py
+drive.google.com - 142.250.102.194
+mail.google.com - 142.250.102.17
+google.com - 142.250.102.100
+
+vagrant@vagrant:~/test_dir$ python3 ip2.py
+drive.google.com - 142.250.102.194
+mail.google.com - 142.250.102.17
+google.com - 142.250.102.100
+
+vagrant@vagrant:~/test_dir$ python3 ip2.py
+drive.google.com - 142.250.102.194
+mail.google.com - 142.250.102.17
+google.com - 142.250.102.100
+
+vagrant@vagrant:~/test_dir$ sudo systemd-resolve --flush-caches
+
+vagrant@vagrant:~/test_dir$ python3 ip2.py
+drive.google.com - 108.177.126.194
+[ERROR] drive.google.com IP mismatch: 142.250.102.194 108.177.126.194
+mail.google.com - 142.250.102.83
+[ERROR] mail.google.com IP mismatch: 142.250.102.17 142.250.102.83
+google.com - 142.250.27.101
+[ERROR] google.com IP mismatch: 142.250.102.100 142.250.27.101
+
+vagrant@vagrant:~/test_dir$ python3 ip2.py
+drive.google.com - 108.177.126.194
+mail.google.com - 142.250.102.19
+[ERROR] mail.google.com IP mismatch: 142.250.102.83 142.250.102.19
+google.com - 142.250.27.139
+[ERROR] google.com IP mismatch: 142.250.27.101 142.250.27.139
+
+vagrant@vagrant:~/test_dir$ python3 ip2.py
+drive.google.com - 108.177.126.194
+mail.google.com - 142.250.102.19
+google.com - 142.250.27.139
+
+vagrant@vagrant:~/test_dir$ python3 ip2.py
+drive.google.com - 108.177.126.194
+mail.google.com - 142.250.102.19
+google.com - 142.250.27.139
+
+vagrant@vagrant:~/test_dir$ python3 ip2.py
+drive.google.com - 108.177.126.194
+mail.google.com - 142.250.102.19
+google.com - 142.250.27.139
 ```
 
 ### json-файл(ы), который(е) записал ваш скрипт:
 ```json
-???
+{"drive.google.com": "108.177.126.194", "mail.google.com": "142.250.102.19", "google.com": "142.250.27.139"}
 ```
 
 ### yml-файл(ы), который(е) записал ваш скрипт:
 ```yaml
-???
+drive.google.com: 108.177.126.194
+google.com: 142.250.27.139
+mail.google.com: 142.250.102.19
 ```
 
 ## Дополнительное задание (со звездочкой*) - необязательно к выполнению
