@@ -129,6 +129,7 @@ vagrant@vagrant:~$ python3 check_mod_repo.py netology/other_repo/
 #!/usr/bin/env python3
 
 import os
+import socket
 
 DB_NAME = 'domains_and_ips.db'
 
@@ -145,8 +146,7 @@ if os.path.isfile(DB_NAME):
         pass
 
 for d in domains.keys():
-    bash_command = ['dig +short {} | tail -n1'.format(d)]
-    ip = os.popen(' && '.join(bash_command)).read().replace('\n','')
+    ip = socket.gethostbyname(d)
     print(d,'-',ip)
     if domains[d] != ip:
         print('[ERROR] {} IP mismatch: {} {}'.format(d, domains[d], ip))
